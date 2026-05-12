@@ -1328,6 +1328,572 @@
       .detail-content, .detail-grid { grid-template-columns: 1fr; }
       .detail-title h2 { font-size: 28px; }
     }
+
+    /* Automotive product upgrade v4 */
+    .garage-tabs {
+      display: none;
+    }
+
+    .brand-logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      flex: none;
+      color: #1e293b;
+      background: linear-gradient(135deg, #f8fafc, #cbd5e1);
+      font-size: 20px;
+      font-weight: 900;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, .16);
+    }
+
+    .garage-card-main {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(170px, 42%);
+      min-height: 238px;
+      padding: 18px;
+      gap: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .garage-card-main::after {
+      content: "AUTO";
+      position: absolute;
+      right: 22px;
+      top: 12px;
+      color: rgba(255, 255, 255, .045);
+      font-size: 92px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .garage-card-copy {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      align-content: start;
+      gap: 11px;
+    }
+
+    .garage-card-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .garage-card-title h3 {
+      margin: 0;
+      font-size: 30px;
+      line-height: 1.05;
+      color: #f8fafc;
+      overflow-wrap: anywhere;
+    }
+
+    .garage-card-sub {
+      color: rgba(248, 250, 252, .62);
+      font-size: 17px;
+      line-height: 1.35;
+    }
+
+    .garage-tags {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .garage-tag {
+      min-height: 28px;
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 9px;
+      border-radius: 6px;
+      color: rgba(248, 250, 252, .84);
+      background: rgba(255, 255, 255, .10);
+      border: 1px solid rgba(255, 255, 255, .08);
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .garage-car-visual {
+      position: relative;
+      z-index: 1;
+      align-self: end;
+      justify-self: stretch;
+      min-height: 150px;
+      display: grid;
+      place-items: end center;
+    }
+
+    .garage-car-visual img {
+      width: 100%;
+      height: 170px;
+      object-fit: contain;
+      filter: drop-shadow(0 28px 24px rgba(0, 0, 0, .34));
+    }
+
+    .garage-car-placeholder {
+      width: 100%;
+      height: 145px;
+      border-radius: 22px;
+      display: grid;
+      place-items: center;
+      color: rgba(248, 250, 252, .52);
+      background: linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
+    }
+
+    .garage-card-footer {
+      position: relative;
+      z-index: 1;
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .garage-metric {
+      min-height: 58px;
+      border-radius: 14px;
+      padding: 9px;
+      background: rgba(255, 255, 255, .07);
+      border: 1px solid rgba(255, 255, 255, .08);
+    }
+
+    .garage-metric span {
+      display: block;
+      color: rgba(248, 250, 252, .48);
+      font-size: 12px;
+    }
+
+    .garage-metric strong {
+      display: block;
+      margin-top: 5px;
+      color: #f8fafc;
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    .detail-backdrop.open {
+      background: #f2f6fb;
+      padding: 0;
+      place-items: stretch;
+    }
+
+    .detail-sheet.asset-page {
+      width: min(980px, 100%);
+      min-height: 100vh;
+      margin: 0 auto;
+      border-radius: 0;
+      background: #f3f8fc;
+      box-shadow: none;
+    }
+
+    .asset-hero {
+      min-height: 315px;
+      position: relative;
+      padding: 72px 18px 22px;
+      color: #fff;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(8, 16, 28, .05), rgba(8, 16, 28, .38)),
+        linear-gradient(135deg, #8cc5d5 0%, #dde7e0 38%, #8faec7 66%, #f3c7a0 100%);
+    }
+
+    .asset-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(150deg, transparent 0 45%, rgba(255,255,255,.48) 45.2% 47.4%, transparent 47.6%),
+        linear-gradient(25deg, transparent 0 58%, rgba(255,255,255,.32) 58.2% 60%, transparent 60.2%),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.18) 0 1px, transparent 1px 72px);
+      opacity: .7;
+    }
+
+    .asset-nav {
+      position: absolute;
+      z-index: 2;
+      inset: 16px 16px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .asset-back {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: rgba(15, 23, 42, .32);
+      font-size: 28px;
+    }
+
+    .asset-chip {
+      min-height: 38px;
+      padding: 8px 13px;
+      border-radius: 9px;
+      background: rgba(15, 23, 42, .62);
+      color: #fff;
+      font-weight: 750;
+    }
+
+    .owner-chip {
+      position: absolute;
+      z-index: 2;
+      left: 18px;
+      bottom: 22px;
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 13px;
+      border-radius: 9px;
+      background: rgba(15, 23, 42, .58);
+      color: #fff;
+      font-weight: 750;
+    }
+
+    .asset-card {
+      margin: -30px 14px 0;
+      position: relative;
+      z-index: 3;
+      min-height: 178px;
+      border-radius: 8px;
+      padding: 18px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(150px, 42%);
+      gap: 12px;
+      background: linear-gradient(135deg, rgba(255,255,255,.96), rgba(235,247,255,.96));
+      border: 1px solid rgba(205, 221, 234, .88);
+      overflow: hidden;
+    }
+
+    .asset-card::after {
+      content: "MY CAR";
+      position: absolute;
+      right: 14px;
+      top: 4px;
+      color: rgba(59, 130, 246, .07);
+      font-size: 42px;
+      font-weight: 900;
+    }
+
+    .asset-identity {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      align-content: center;
+      gap: 9px;
+    }
+
+    .asset-identity h2 {
+      font-size: 28px;
+    }
+
+    .asset-identity p {
+      margin: 0;
+      color: #6b7280;
+      font-size: 16px;
+    }
+
+    .asset-car-image {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 120px;
+      object-fit: contain;
+      align-self: end;
+      filter: drop-shadow(0 18px 16px rgba(15, 23, 42, .18));
+    }
+
+    .asset-actions {
+      padding: 24px 10px 18px;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 4px;
+      background: #fff;
+    }
+
+    .asset-action {
+      min-height: 72px;
+      display: grid;
+      place-items: center;
+      gap: 7px;
+      color: #111827;
+      background: #fff;
+      border: 0;
+      font-weight: 750;
+      font-size: 13px;
+    }
+
+    .asset-action i {
+      width: 31px;
+      height: 31px;
+      display: grid;
+      place-items: center;
+      color: #1f2937;
+      font-style: normal;
+      font-size: 22px;
+    }
+
+    .asset-insights {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      background: #fff;
+      border-top: 1px solid #eef2f7;
+      border-bottom: 1px solid #eef2f7;
+    }
+
+    .asset-insight {
+      min-height: 132px;
+      padding: 18px;
+      border-right: 1px solid #eef2f7;
+    }
+
+    .asset-insight strong {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 18px;
+    }
+
+    .asset-insight b {
+      font-size: 42px;
+    }
+
+    .asset-expense {
+      background: #fff;
+      padding: 22px 18px 28px;
+    }
+
+    .expense-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .expense-head h3 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .chart {
+      height: 210px;
+      display: grid;
+      grid-template-columns: 54px repeat(6, 1fr);
+      align-items: end;
+      gap: 11px;
+      border-bottom: 1px solid #dce5ee;
+      background:
+        repeating-linear-gradient(0deg, transparent 0 41px, #edf2f7 42px 43px);
+      color: #9ca3af;
+    }
+
+    .chart-axis {
+      align-self: stretch;
+      border-right: 1px solid #dce5ee;
+      font-size: 12px;
+      padding-top: 6px;
+    }
+
+    .chart-bar {
+      display: grid;
+      align-items: end;
+      justify-items: center;
+      gap: 8px;
+      font-size: 12px;
+    }
+
+    .chart-bar span {
+      width: 24px;
+      min-height: 8px;
+      border-radius: 5px 5px 0 0;
+      background: linear-gradient(180deg, #3b8cff, #84bcff);
+    }
+
+    .asset-detail-grid {
+      background: #fff;
+      padding: 0 18px 28px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .asset-field {
+      min-height: 74px;
+      padding: 13px;
+      border-radius: 8px;
+      background: #f8fbff;
+      border: 1px solid #eef2f7;
+    }
+
+    .asset-field span {
+      display: block;
+      color: #8b95a1;
+      margin-bottom: 7px;
+    }
+
+    .asset-primary-btn {
+      width: calc(100% - 28px);
+      margin: 0 14px 28px;
+      min-height: 56px;
+      border-radius: 4px;
+      background: #348dfb;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    @media (max-width: 760px) {
+      :root { color-scheme: dark; }
+      body {
+        background: #101625;
+      }
+      .app {
+        background: #101625;
+        color: #f8fafc;
+      }
+      .topbar {
+        min-height: 116px;
+        padding: 18px 28px 8px;
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .brand {
+        justify-content: center;
+      }
+      .brand-mark, .subtitle {
+        display: none;
+      }
+      h1 {
+        font-size: 24px;
+        font-weight: 850;
+      }
+      .garage-tabs {
+        display: flex;
+        gap: 22px;
+        padding: 0 28px 18px;
+        font-size: 22px;
+        color: rgba(248, 250, 252, .58);
+      }
+      .garage-tabs strong {
+        position: relative;
+        color: #fff;
+      }
+      .garage-tabs strong::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -8px;
+        width: 36px;
+        height: 4px;
+        border-radius: 999px;
+        background: #348dfb;
+      }
+      .garage-hero,
+      #featuredCar,
+      .quick-grid,
+      .stats,
+      .main > .panel:has(#dueList) {
+        display: none;
+      }
+      .main > .panel:has(#carCards) {
+        margin: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+      }
+      .toolbar {
+        padding: 0 28px 18px;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+        border: 0;
+        background: transparent;
+      }
+      .toolbar input {
+        display: none;
+      }
+      .toolbar select {
+        min-height: 54px;
+        border-radius: 10px;
+        color: #f8fafc;
+        background: #252b37;
+        border-color: rgba(255, 255, 255, .10);
+        font-size: 18px;
+      }
+      .cards {
+        display: grid;
+        gap: 12px;
+        padding: 0 28px 104px;
+        background: transparent;
+      }
+      .car-card {
+        border-radius: 8px;
+        background:
+          linear-gradient(115deg, rgba(70, 74, 92, .82), rgba(39, 45, 58, .98)),
+          #252b37;
+        border: 1px solid rgba(255, 255, 255, .10);
+        box-shadow: none;
+      }
+      .garage-card-main {
+        grid-template-columns: minmax(0, 1fr) 42%;
+        min-height: 214px;
+        padding: 18px 16px;
+      }
+      .garage-card-title h3 {
+        font-size: 24px;
+      }
+      .garage-card-sub {
+        font-size: 16px;
+      }
+      .garage-car-visual {
+        min-height: 120px;
+      }
+      .garage-car-visual img {
+        height: 128px;
+      }
+      .garage-card-footer {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .garage-metric:nth-child(3) {
+        display: none;
+      }
+      .quick-add {
+        right: 0;
+        left: 116px;
+        bottom: 18px;
+        width: auto;
+        height: 64px;
+        border-radius: 3px;
+        display: grid;
+        font-size: 0;
+      }
+      .quick-add::after {
+        content: "添加车辆";
+        font-size: 18px;
+        font-weight: 800;
+      }
+      .quick-add::before {
+        content: "客服";
+        position: fixed;
+        left: 0;
+        bottom: 18px;
+        width: 116px;
+        height: 64px;
+        display: grid;
+        place-items: center;
+        color: #fff;
+        background: #101625;
+        font-size: 14px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1353,6 +1919,10 @@
         <button class="btn danger" id="clearBtn" type="button">清空</button>
       </div>
     </header>
+    <nav class="garage-tabs" aria-label="车库分类">
+      <strong>汽车</strong>
+      <span>摩托车</span>
+    </nav>
 
     <div class="layout">
       <section class="panel form-panel" id="formPanel">
@@ -1958,50 +2528,30 @@
 
       wrap.innerHTML = list.map((car) => {
         const status = getCarStatus(car);
-        const license = car.licensePhoto ? `<img class="license-thumb" src="${car.licensePhoto}" alt="行驶证照片">` : "";
-        const hero = car.vehiclePhoto
-          ? `<img src="${car.vehiclePhoto}" alt="${escapeHtml(car.plate)}车辆照片">${license}`
-          : `<span>暂无车辆照片</span>${license}`;
         const service = getMileageService(car);
+        const visual = car.vehiclePhoto
+          ? `<img src="${car.vehiclePhoto}" alt="${escapeHtml(car.plate)}车辆照片">`
+          : `<div class="garage-car-placeholder">MY CAR</div>`;
         return `
           <article class="car-card" onclick="openDetail('${car.id}')" tabindex="0" onkeydown="if(event.key==='Enter') openDetail('${car.id}')">
-            <div class="car-hero">${hero}</div>
-            <div class="car-body">
-              <div class="car-head">
-                <div>
-                  <div class="plate">${escapeHtml(car.plate)}</div>
-                  <div class="car-name">${escapeHtml(car.name)}</div>
+            <div class="garage-card-main">
+              <div class="garage-card-copy">
+                <div class="garage-card-title">
+                  <div class="brand-logo">${escapeHtml(brandMark(car.name))}</div>
+                  <h3>${escapeHtml(car.name || "未命名车辆")}</h3>
                 </div>
-                ${carStatusBadge(status)}
+                <div class="garage-card-sub">${escapeHtml(car.purchaseDate ? `${new Date(car.purchaseDate).getFullYear()}款 ` : "")}${escapeHtml(car.type || "车辆")} · ${escapeHtml(car.useStatus || "正常使用")}</div>
+                <div class="garage-tags">
+                  <span class="garage-tag">${escapeHtml(maskPlate(car.plate || "未填写车牌"))}</span>
+                  <span class="garage-tag">${escapeHtml(carStatusText(status))}</span>
+                  <span class="garage-tag">${car.licensePhoto ? "已存证件" : "待补证件"}</span>
+                </div>
               </div>
-              <div class="meta-line">
-                <span class="badge info">${escapeHtml(car.type || "车型未填")}</span>
-                <span class="badge">${escapeHtml(car.useStatus || "正常使用")}</span>
-                ${car.licensePhoto ? `<span class="badge ok">有行驶证</span>` : `<span class="badge">无行驶证</span>`}
-              </div>
-              <div class="service-strip">
-                <strong>${escapeHtml(service.summary)}</strong>
-                <div class="service-meter" aria-hidden="true"><span style="width:${service.progress}%"></span></div>
-                <span class="muted">当前 ${service.currentText} · 下次 ${service.nextText}</span>
-              </div>
-              <div class="mini-grid">
-                ${mini("保养", dateWithShortStatus(car.nextService))}
-                ${mini("年审", dateWithShortStatus(car.inspectionDue))}
-                ${mini("保险", dateWithShortStatus(car.insuranceDue))}
-                ${mini("检查", dateWithShortStatus(car.checkDue))}
-                ${mini("负责人", `${escapeHtml(car.owner || "-")} ${escapeHtml(car.ownerPhone || "")}`)}
-                ${mini("公里/费用", `${car.mileage ? Number(car.mileage).toLocaleString() + " km" : "-"} / ${car.yearCost ? money(car.yearCost) : "-"}`)}
-              </div>
-              <div class="meta-line">
-                ${car.insuranceCompany ? `<span class="badge info">${escapeHtml(car.insuranceCompany)}</span>` : ""}
-                ${car.parking ? `<span class="badge">${escapeHtml(car.parking)}</span>` : ""}
-                ${car.serviceShop ? `<span class="badge">${escapeHtml(car.serviceShop)}</span>` : ""}
-              </div>
-              <div class="muted">${escapeHtml(car.notes || "暂无备注")}</div>
-              <div class="row-actions">
-                <button class="btn small" type="button" onclick="event.stopPropagation(); openDetail('${car.id}')">详情</button>
-                <button class="btn small" type="button" onclick="event.stopPropagation(); editCar('${car.id}')">编辑</button>
-                <button class="btn small danger" type="button" onclick="event.stopPropagation(); removeCar('${car.id}')">删除</button>
+              <div class="garage-car-visual">${visual}</div>
+              <div class="garage-card-footer">
+                <div class="garage-metric"><span>保养提醒</span><strong>${escapeHtml(service.summary)}</strong></div>
+                <div class="garage-metric"><span>保险</span><strong>${escapeHtml(dateWithShortStatus(car.insuranceDue))}</strong></div>
+                <div class="garage-metric"><span>负责人</span><strong>${escapeHtml(car.owner || "-")}</strong></div>
               </div>
             </div>
           </article>
@@ -2018,69 +2568,82 @@
       if (!car) return;
       const modal = $("detailModal");
       const service = getMileageService(car);
-      const hero = car.vehiclePhoto
-        ? `<img src="${car.vehiclePhoto}" alt="${escapeHtml(car.plate)}车辆照片">`
-        : "";
-      const license = car.licensePhoto
-        ? `<img src="${car.licensePhoto}" alt="行驶证照片" style="width:100%;height:180px;object-fit:cover;border-radius:14px;margin-top:10px;">`
-        : `<div class="muted">还没有行驶证照片</div>`;
+      const carImage = car.vehiclePhoto
+        ? `<img class="asset-car-image" src="${car.vehiclePhoto}" alt="${escapeHtml(car.plate)}车辆照片">`
+        : `<div class="asset-car-image featured-placeholder">MY CAR</div>`;
+      const years = car.purchaseDate ? Math.max(0, new Date().getFullYear() - new Date(car.purchaseDate).getFullYear()) : "-";
+      const totalCost = toNumber(car.yearCost) + toNumber(car.lastCost);
       modal.innerHTML = `
-        <section class="detail-sheet">
-          <div class="detail-hero">
-            ${hero}
-            <button class="detail-close" type="button" onclick="closeDetail()" aria-label="关闭">×</button>
-            <div class="detail-title">
-              <div class="plate">${escapeHtml(car.plate || "未填写车牌")}</div>
+        <section class="detail-sheet asset-page">
+          <div class="asset-hero">
+            <div class="asset-nav">
+              <button class="asset-back" type="button" onclick="closeDetail()" aria-label="返回">‹</button>
+              <div class="garage-tags">
+                <button class="asset-chip" type="button" onclick="closeDetail(); editCar('${car.id}')">编辑档案</button>
+                <button class="asset-chip" type="button" onclick="closeDetail()">我的车库</button>
+              </div>
+            </div>
+            <div class="owner-chip">成为认证车主 ›</div>
+          </div>
+          <div class="asset-card">
+            <div class="asset-identity">
+              <div class="brand-logo">${escapeHtml(brandMark(car.name))}</div>
               <h2>${escapeHtml(car.name || "未命名车辆")}</h2>
-              <div>${escapeHtml(car.type || "车辆")} · ${escapeHtml(car.useStatus || "正常使用")} · ${escapeHtml(car.owner || "未分配负责人")}</div>
+              <p>${escapeHtml(car.purchaseDate ? `${new Date(car.purchaseDate).getFullYear()}款 ` : "")}${escapeHtml(car.type || "车辆")} · ${escapeHtml(car.useStatus || "正常使用")}</p>
+              <div class="plate">${escapeHtml(car.plate || "未填写车牌")}</div>
             </div>
+            ${carImage}
           </div>
-          <div class="detail-content">
-            <div class="detail-section">
-              <h3>车辆档案</h3>
-              <div class="detail-grid">
-                ${detailField("当前公里数", car.mileage ? `${Number(car.mileage).toLocaleString()} km` : "-")}
-                ${detailField("下次保养公里", service.nextText)}
-                ${detailField("保养状态", service.summary)}
-                ${detailField("购车日期", formatDate(car.purchaseDate))}
-                ${detailField("车架号/VIN", car.vin || "-")}
-                ${detailField("发动机号", car.engineNo || "-")}
-                ${detailField("停放位置", car.parking || "-")}
-                ${detailField("ETC/油卡", car.fuelCard || "-")}
-              </div>
+          <div class="asset-actions">
+            <button class="asset-action" type="button"><i>▣</i>逛论坛</button>
+            <button class="asset-action" type="button"><i>🎁</i>能量兑奖</button>
+            <button class="asset-action" type="button"><i>▱</i>车险测算</button>
+            <button class="asset-action" type="button"><i>♙</i>车主认证</button>
+            <button class="asset-action" type="button"><i>¥</i>车辆置换</button>
+          </div>
+          <div class="asset-insights">
+            <div class="asset-insight">
+              <strong>你的爱车已陪伴</strong>
+              <b>${escapeHtml(years)}</b> 年
+              <div class="muted">点击查看爱车保值率 ›</div>
             </div>
-            <div class="detail-section">
-              <h3>保养与联系</h3>
-              <div class="detail-grid">
-                ${detailField("上次保养", dateWithShortStatus(car.lastService))}
-                ${detailField("下次保养", dateWithShortStatus(car.nextService))}
-                ${detailField("保养门店", car.serviceShop || "-")}
-                ${detailField("门店电话", car.servicePhone || "-")}
-                ${detailField("负责人", car.owner || "-")}
-                ${detailField("联系电话", car.ownerPhone || "-")}
-              </div>
-            </div>
-            <div class="detail-section">
-              <h3>证件与费用</h3>
-              <div class="detail-grid">
-                ${detailField("年审到期", dateWithShortStatus(car.inspectionDue))}
-                ${detailField("保险到期", dateWithShortStatus(car.insuranceDue))}
-                ${detailField("保险公司", car.insuranceCompany || "-")}
-                ${detailField("保单号", car.policyNo || "-")}
-                ${detailField("上次费用", car.lastCost ? money(car.lastCost) : "-")}
-                ${detailField("年度费用", car.yearCost ? money(car.yearCost) : "-")}
-              </div>
-            </div>
-            <div class="detail-section">
-              <h3>照片与备注</h3>
-              ${license}
-              <p class="muted">${escapeHtml(car.notes || "暂无备注")}</p>
-              <div class="row-actions">
-                <button class="btn small" type="button" onclick="closeDetail(); editCar('${car.id}')">编辑车辆</button>
-                <button class="btn small danger" type="button" onclick="closeDetail(); removeCar('${car.id}')">删除车辆</button>
+            <div class="asset-insight">
+              <strong>记录第一笔花费</strong>
+              <div class="garage-tags"><span class="garage-tag" style="color:#348dfb;background:#e8f3ff;">智能养车账本</span></div>
+              <div class="chart" style="height:72px;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:10px;border:0;">
+                ${[28, 38, 54, 30, 16, 24].map((h) => `<div class="chart-bar"><span style="height:${h}px"></span></div>`).join("")}
               </div>
             </div>
           </div>
+          <div class="asset-expense">
+            <div class="expense-head">
+              <h3>养车费用</h3>
+              <div><span class="muted">环形图</span>　<strong>柱状图</strong></div>
+            </div>
+            <h2>${escapeHtml(totalCost ? money(totalCost) : "0")} ›</h2>
+            <div class="chart">
+              <div class="chart-axis">金额（元）</div>
+              ${[
+                ["加油", 0],
+                ["保养", toNumber(car.lastCost)],
+                ["车险", Math.max(0, Math.round(toNumber(car.yearCost) * .42))],
+                ["维修", 0],
+                ["改装", 0],
+                ["其他", Math.max(0, Math.round(toNumber(car.yearCost) * .08))]
+              ].map(([label, value]) => `<div class="chart-bar"><span style="height:${Math.max(8, Math.min(170, value / 80))}px"></span>${escapeHtml(label)}</div>`).join("")}
+            </div>
+          </div>
+          <div class="asset-detail-grid">
+            ${assetField("保养提醒", service.summary)}
+            ${assetField("当前公里", car.mileage ? `${Number(car.mileage).toLocaleString()} km` : "-")}
+            ${assetField("保险到期", dateWithShortStatus(car.insuranceDue))}
+            ${assetField("年审到期", dateWithShortStatus(car.inspectionDue))}
+            ${assetField("负责人", `${car.owner || "-"} ${car.ownerPhone || ""}`)}
+            ${assetField("保养门店", car.serviceShop || "-")}
+            ${assetField("车架号/VIN", car.vin || "-")}
+            ${assetField("备注", car.notes || "暂无备注")}
+          </div>
+          <button class="asset-primary-btn" type="button" onclick="closeDetail(); editCar('${car.id}')">记一笔 / 编辑档案</button>
         </section>
       `;
       modal.classList.add("open");
@@ -2096,6 +2659,32 @@
 
     function detailField(label, value) {
       return `<div class="detail-field"><span>${label}</span><strong>${escapeHtml(value || "-")}</strong></div>`;
+    }
+
+    function assetField(label, value) {
+      return `<div class="asset-field"><span>${label}</span><strong>${escapeHtml(value || "-")}</strong></div>`;
+    }
+
+    function brandMark(name) {
+      const value = String(name || "车").trim();
+      if (/mini/i.test(value)) return "MINI";
+      if (/奔驰|AMG|G级/i.test(value)) return "MB";
+      if (/保时捷|Porsche|911/i.test(value)) return "P";
+      if (/宝马|BMW/i.test(value)) return "BMW";
+      if (/丰田|Toyota/i.test(value)) return "T";
+      return value.slice(0, 1).toUpperCase();
+    }
+
+    function maskPlate(plate) {
+      const value = String(plate || "");
+      if (value.length <= 4) return value;
+      return `${value.slice(0, 2)}***${value.slice(-1)}`;
+    }
+
+    function carStatusText(status) {
+      if (status === "overdue") return "需处理";
+      if (status === "soon") return "近期提醒";
+      return "常用车";
     }
 
     function getMileageService(car) {
