@@ -381,6 +381,13 @@
       border-radius: 18px;
       overflow: hidden;
       min-width: 0;
+      transition: transform .18s ease, box-shadow .18s ease;
+      cursor: pointer;
+    }
+
+    .car-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 44px rgba(17, 24, 39, .13);
     }
 
     .car-hero {
@@ -450,6 +457,152 @@
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 9px;
+    }
+
+    .service-strip {
+      display: grid;
+      gap: 8px;
+      padding: 11px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(47, 134, 255, .10), rgba(24, 183, 123, .08));
+      border: 1px solid rgba(47, 134, 255, .14);
+    }
+
+    .service-strip strong {
+      font-size: 13px;
+    }
+
+    .service-meter {
+      height: 8px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(17, 24, 39, .08);
+    }
+
+    .service-meter span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #2f86ff, #18b77b);
+    }
+
+    .detail-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      display: none;
+      padding: 20px;
+      overflow: auto;
+      background: rgba(8, 16, 28, .52);
+      backdrop-filter: blur(14px);
+    }
+
+    .detail-backdrop.open {
+      display: grid;
+      place-items: start center;
+    }
+
+    .detail-sheet {
+      width: min(980px, 100%);
+      overflow: hidden;
+      border-radius: 24px;
+      background: #fff;
+      color: #111827;
+      box-shadow: 0 30px 90px rgba(10, 20, 32, .35);
+    }
+
+    .detail-hero {
+      min-height: 310px;
+      position: relative;
+      display: grid;
+      align-items: end;
+      padding: 22px;
+      color: #fff;
+      background: linear-gradient(135deg, #8aa6b5, #51697a);
+    }
+
+    .detail-hero img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .detail-hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(6, 12, 20, .08), rgba(6, 12, 20, .78));
+    }
+
+    .detail-title {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 10px;
+    }
+
+    .detail-title h2 {
+      font-size: 34px;
+    }
+
+    .detail-close {
+      position: absolute;
+      z-index: 2;
+      right: 18px;
+      top: 18px;
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, .92);
+      color: #111827;
+      font-size: 22px;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, .18);
+    }
+
+    .detail-content {
+      padding: 18px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr);
+      gap: 16px;
+    }
+
+    .detail-section {
+      border: 1px solid #edf2f6;
+      border-radius: 18px;
+      padding: 15px;
+      background: #f8fbfd;
+    }
+
+    .detail-section h3 {
+      margin: 0 0 12px;
+      font-size: 16px;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .detail-field {
+      min-height: 66px;
+      border-radius: 14px;
+      padding: 11px;
+      background: #fff;
+      border: 1px solid #edf2f6;
+    }
+
+    .detail-field span {
+      display: block;
+      margin-bottom: 5px;
+      color: #7b8794;
+      font-size: 12px;
+    }
+
+    .detail-field strong {
+      overflow-wrap: anywhere;
     }
 
     .mini {
@@ -953,6 +1106,11 @@
         margin: 12px;
         border-radius: 22px;
       }
+      .detail-backdrop { padding: 0; }
+      .detail-sheet { min-height: 100vh; border-radius: 0; }
+      .detail-hero { min-height: 260px; }
+      .detail-content, .detail-grid { grid-template-columns: 1fr; }
+      .detail-title h2 { font-size: 28px; }
     }
   </style>
 </head>
@@ -981,7 +1139,7 @@
     </header>
 
     <div class="layout">
-      <section class="panel form-panel open" id="formPanel">
+      <section class="panel form-panel" id="formPanel">
         <div class="panel-title">
           <h2 id="formTitle">新增车辆</h2>
           <button class="btn small" type="button" id="closeFormBtn">收起</button>
@@ -1062,6 +1220,14 @@
             </label>
             <label>购车日期
               <input id="purchaseDate" type="date">
+            </label>
+          </div>
+          <div class="two">
+            <label>上次保养公里数
+              <input id="lastServiceMileage" type="number" min="0" step="1" placeholder="例：25000">
+            </label>
+            <label>保养间隔公里
+              <input id="serviceIntervalKm" type="number" min="0" step="500" placeholder="例：10000">
             </label>
           </div>
           <div class="two">
@@ -1210,6 +1376,7 @@
   </div>
 
   <button class="quick-add" id="quickAddBtn" type="button" aria-label="新增车辆">+</button>
+  <div class="detail-backdrop" id="detailModal" role="dialog" aria-modal="true" aria-label="车辆详情"></div>
   <div class="toast" id="toast"></div>
 
   <script>
@@ -1218,6 +1385,7 @@
     const fields = [
       "carId", "vehiclePhoto", "licensePhoto", "plate", "name", "type", "useStatus",
       "owner", "ownerPhone", "vin", "engineNo", "mileage", "purchaseDate", "parking",
+      "lastServiceMileage", "serviceIntervalKm",
       "fuelCard", "lastService", "nextService", "inspectionDue", "insuranceDue",
       "permitDue", "checkDue", "insuranceCompany", "policyNo", "serviceShop",
       "servicePhone", "lastCost", "yearCost", "notes"
@@ -1237,6 +1405,12 @@
     $("clearBtn").addEventListener("click", clearData);
     $("quickAddBtn").addEventListener("click", () => showForm(true));
     $("closeFormBtn").addEventListener("click", () => showForm(false));
+    $("detailModal").addEventListener("click", (event) => {
+      if (event.target.id === "detailModal") closeDetail();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeDetail();
+    });
     $("vehiclePhotoInput").addEventListener("change", (event) => handlePhoto(event, "vehiclePhoto"));
     $("licensePhotoInput").addEventListener("change", (event) => handlePhoto(event, "licensePhoto"));
 
@@ -1262,6 +1436,8 @@
             permitDue: "2026-11-10",
             checkDue: "2026-07-01",
             mileage: "28000",
+            lastServiceMileage: "25000",
+            serviceIntervalKm: "10000",
             purchaseDate: "2023-05-18",
             parking: "公司地库B2",
             insuranceCompany: "平安保险",
@@ -1296,6 +1472,8 @@
         servicePhone: "",
         lastCost: "",
         yearCost: "",
+        lastServiceMileage: "",
+        serviceIntervalKm: "10000",
         vehiclePhoto: "",
         licensePhoto: "",
         ...car,
@@ -1322,6 +1500,8 @@
         vin: data.vin,
         engineNo: data.engineNo,
         mileage: data.mileage,
+        lastServiceMileage: data.lastServiceMileage,
+        serviceIntervalKm: data.serviceIntervalKm,
         purchaseDate: data.purchaseDate,
         parking: data.parking,
         fuelCard: data.fuelCard,
@@ -1501,11 +1681,13 @@
       const photo = car.vehiclePhoto
         ? `<img class="featured-car" src="${car.vehiclePhoto}" alt="${escapeHtml(car.plate)}车辆照片">`
         : `<div class="featured-car featured-placeholder">MY CAR</div>`;
+      const service = getMileageService(car);
       box.innerHTML = `
         <div class="featured-info">
           <div class="featured-title">${escapeHtml(car.name || "未命名车辆")}</div>
           <div class="featured-sub">${escapeHtml(car.type || "车辆")} · ${escapeHtml(car.useStatus || "正常使用")}</div>
           <div class="plate">${escapeHtml(car.plate || "未填写车牌")}</div>
+          <div class="featured-sub">${escapeHtml(service.summary)}</div>
         </div>
         ${photo}
       `;
@@ -1518,7 +1700,7 @@
     }
 
     function renderStats() {
-      const reminders = cars.flatMap(getReminders);
+      const reminders = cars.flatMap(getAllReminderItems);
       const totalCost = cars.reduce((sum, car) => sum + toNumber(car.yearCost), 0);
       $("totalCount").textContent = cars.length;
       $("soonCount").textContent = reminders.filter((item) => item.days >= 0 && item.days <= 30).length;
@@ -1529,7 +1711,7 @@
 
     function renderDueList() {
       const list = $("dueList");
-      const reminders = cars.flatMap(getReminders)
+      const reminders = cars.flatMap(getAllReminderItems)
         .filter((item) => item.days <= 60)
         .sort((a, b) => a.days - b.days)
         .slice(0, 10);
@@ -1543,7 +1725,7 @@
         <div class="due-item">
           <div>
             <strong>${escapeHtml(item.plate)} · ${item.kind}</strong>
-            <span class="muted">${escapeHtml(item.name)}，到期日 ${formatDate(item.date)}</span>
+            <span class="muted">${escapeHtml(item.name)}，${escapeHtml(item.note || `到期日 ${formatDate(item.date)}`)}</span>
           </div>
           ${statusBadge(item.days)}
         </div>
@@ -1563,8 +1745,9 @@
         const hero = car.vehiclePhoto
           ? `<img src="${car.vehiclePhoto}" alt="${escapeHtml(car.plate)}车辆照片">${license}`
           : `<span>暂无车辆照片</span>${license}`;
+        const service = getMileageService(car);
         return `
-          <article class="car-card">
+          <article class="car-card" onclick="openDetail('${car.id}')" tabindex="0" onkeydown="if(event.key==='Enter') openDetail('${car.id}')">
             <div class="car-hero">${hero}</div>
             <div class="car-body">
               <div class="car-head">
@@ -1578,6 +1761,11 @@
                 <span class="badge info">${escapeHtml(car.type || "车型未填")}</span>
                 <span class="badge">${escapeHtml(car.useStatus || "正常使用")}</span>
                 ${car.licensePhoto ? `<span class="badge ok">有行驶证</span>` : `<span class="badge">无行驶证</span>`}
+              </div>
+              <div class="service-strip">
+                <strong>${escapeHtml(service.summary)}</strong>
+                <div class="service-meter" aria-hidden="true"><span style="width:${service.progress}%"></span></div>
+                <span class="muted">当前 ${service.currentText} · 下次 ${service.nextText}</span>
               </div>
               <div class="mini-grid">
                 ${mini("保养", dateWithShortStatus(car.nextService))}
@@ -1594,8 +1782,9 @@
               </div>
               <div class="muted">${escapeHtml(car.notes || "暂无备注")}</div>
               <div class="row-actions">
-                <button class="btn small" type="button" onclick="editCar('${car.id}')">编辑</button>
-                <button class="btn small danger" type="button" onclick="removeCar('${car.id}')">删除</button>
+                <button class="btn small" type="button" onclick="event.stopPropagation(); openDetail('${car.id}')">详情</button>
+                <button class="btn small" type="button" onclick="event.stopPropagation(); editCar('${car.id}')">编辑</button>
+                <button class="btn small danger" type="button" onclick="event.stopPropagation(); removeCar('${car.id}')">删除</button>
               </div>
             </div>
           </article>
@@ -1607,7 +1796,124 @@
       return `<div class="mini"><span>${label}</span><strong>${value || "-"}</strong></div>`;
     }
 
+    function openDetail(id) {
+      const car = cars.find((item) => item.id === id);
+      if (!car) return;
+      const modal = $("detailModal");
+      const service = getMileageService(car);
+      const hero = car.vehiclePhoto
+        ? `<img src="${car.vehiclePhoto}" alt="${escapeHtml(car.plate)}车辆照片">`
+        : "";
+      const license = car.licensePhoto
+        ? `<img src="${car.licensePhoto}" alt="行驶证照片" style="width:100%;height:180px;object-fit:cover;border-radius:14px;margin-top:10px;">`
+        : `<div class="muted">还没有行驶证照片</div>`;
+      modal.innerHTML = `
+        <section class="detail-sheet">
+          <div class="detail-hero">
+            ${hero}
+            <button class="detail-close" type="button" onclick="closeDetail()" aria-label="关闭">×</button>
+            <div class="detail-title">
+              <div class="plate">${escapeHtml(car.plate || "未填写车牌")}</div>
+              <h2>${escapeHtml(car.name || "未命名车辆")}</h2>
+              <div>${escapeHtml(car.type || "车辆")} · ${escapeHtml(car.useStatus || "正常使用")} · ${escapeHtml(car.owner || "未分配负责人")}</div>
+            </div>
+          </div>
+          <div class="detail-content">
+            <div class="detail-section">
+              <h3>车辆档案</h3>
+              <div class="detail-grid">
+                ${detailField("当前公里数", car.mileage ? `${Number(car.mileage).toLocaleString()} km` : "-")}
+                ${detailField("下次保养公里", service.nextText)}
+                ${detailField("保养状态", service.summary)}
+                ${detailField("购车日期", formatDate(car.purchaseDate))}
+                ${detailField("车架号/VIN", car.vin || "-")}
+                ${detailField("发动机号", car.engineNo || "-")}
+                ${detailField("停放位置", car.parking || "-")}
+                ${detailField("ETC/油卡", car.fuelCard || "-")}
+              </div>
+            </div>
+            <div class="detail-section">
+              <h3>保养与联系</h3>
+              <div class="detail-grid">
+                ${detailField("上次保养", dateWithShortStatus(car.lastService))}
+                ${detailField("下次保养", dateWithShortStatus(car.nextService))}
+                ${detailField("保养门店", car.serviceShop || "-")}
+                ${detailField("门店电话", car.servicePhone || "-")}
+                ${detailField("负责人", car.owner || "-")}
+                ${detailField("联系电话", car.ownerPhone || "-")}
+              </div>
+            </div>
+            <div class="detail-section">
+              <h3>证件与费用</h3>
+              <div class="detail-grid">
+                ${detailField("年审到期", dateWithShortStatus(car.inspectionDue))}
+                ${detailField("保险到期", dateWithShortStatus(car.insuranceDue))}
+                ${detailField("保险公司", car.insuranceCompany || "-")}
+                ${detailField("保单号", car.policyNo || "-")}
+                ${detailField("上次费用", car.lastCost ? money(car.lastCost) : "-")}
+                ${detailField("年度费用", car.yearCost ? money(car.yearCost) : "-")}
+              </div>
+            </div>
+            <div class="detail-section">
+              <h3>照片与备注</h3>
+              ${license}
+              <p class="muted">${escapeHtml(car.notes || "暂无备注")}</p>
+              <div class="row-actions">
+                <button class="btn small" type="button" onclick="closeDetail(); editCar('${car.id}')">编辑车辆</button>
+                <button class="btn small danger" type="button" onclick="closeDetail(); removeCar('${car.id}')">删除车辆</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+      modal.classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeDetail() {
+      const modal = $("detailModal");
+      modal.classList.remove("open");
+      modal.innerHTML = "";
+      document.body.style.overflow = "";
+    }
+
+    function detailField(label, value) {
+      return `<div class="detail-field"><span>${label}</span><strong>${escapeHtml(value || "-")}</strong></div>`;
+    }
+
+    function getMileageService(car) {
+      const current = toNumber(car.mileage);
+      const last = toNumber(car.lastServiceMileage);
+      const interval = toNumber(car.serviceIntervalKm) || 10000;
+      const next = last ? last + interval : 0;
+      const used = next ? Math.max(0, current - last) : 0;
+      const progress = next ? Math.min(100, Math.round((used / interval) * 100)) : 0;
+      if (!current || !next) {
+        return {
+          summary: "补充公里数后可自动判断保养",
+          progress: 0,
+          currentText: current ? `${current.toLocaleString()} km` : "-",
+          nextText: "-"
+        };
+      }
+      const remaining = next - current;
+      return {
+        summary: remaining < 0 ? `已超保养 ${Math.abs(remaining).toLocaleString()} km` : `距下次保养 ${remaining.toLocaleString()} km`,
+        progress,
+        currentText: `${current.toLocaleString()} km`,
+        nextText: `${next.toLocaleString()} km`
+      };
+    }
+
     function getCarStatus(car) {
+      const service = getMileageService(car);
+      if (service.nextText !== "-") {
+        const current = toNumber(car.mileage);
+        const next = toNumber(car.lastServiceMileage) + (toNumber(car.serviceIntervalKm) || 10000);
+        const remaining = next - current;
+        if (remaining < 0) return "overdue";
+        if (remaining <= 1000) return "soon";
+      }
       const reminders = getReminders(car);
       if (reminders.some((item) => item.days < 0)) return "overdue";
       if (reminders.some((item) => item.days <= 30)) return "soon";
@@ -1627,6 +1933,28 @@
         name: car.name,
         days: daysBetween(today, parseDate(item.date))
       }));
+    }
+
+    function getAllReminderItems(car) {
+      const items = getReminders(car);
+      const service = getMileageService(car);
+      if (service.nextText !== "-") {
+        const current = toNumber(car.mileage);
+        const next = toNumber(car.lastServiceMileage) + (toNumber(car.serviceIntervalKm) || 10000);
+        const remaining = next - current;
+        if (remaining <= 3000) {
+          items.push({
+            kind: "里程保养",
+            plate: car.plate,
+            name: car.name,
+            days: remaining < 0 ? -1 : 30,
+            note: remaining < 0
+              ? `已超过建议保养 ${Math.abs(remaining).toLocaleString()} km`
+              : `还差 ${remaining.toLocaleString()} km 到 ${next.toLocaleString()} km 保养`
+          });
+        }
+      }
+      return items;
     }
 
     function dateWithShortStatus(date) {

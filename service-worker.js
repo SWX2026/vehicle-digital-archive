@@ -1,4 +1,4 @@
-const CACHE_NAME = "vehicle-archive-app-v1";
+const CACHE_NAME = "vehicle-archive-app-v2";
 const APP_FILES = [
   "./",
   "./index.html",
