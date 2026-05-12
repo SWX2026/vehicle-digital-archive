@@ -1,0 +1,1748 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#071319">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="梦想车库">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>梦想车库</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #071319;
+      --panel: rgba(13, 29, 38, .92);
+      --panel-2: rgba(17, 40, 52, .92);
+      --line: rgba(119, 214, 226, .22);
+      --line-strong: rgba(119, 214, 226, .44);
+      --text: #edf8f9;
+      --muted: #91aab3;
+      --cyan: #39d6e8;
+      --green: #47e09a;
+      --amber: #ffc35a;
+      --red: #ff6a62;
+      --blue: #62a8ff;
+      --shadow: 0 24px 70px rgba(0, 0, 0, .34);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { background: var(--bg); }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 20% 0%, rgba(57, 214, 232, .16), transparent 28rem),
+        radial-gradient(circle at 85% 8%, rgba(71, 224, 154, .12), transparent 24rem),
+        linear-gradient(180deg, #071319 0%, #0b1820 45%, #091116 100%);
+    }
+
+    button, input, select, textarea { font: inherit; }
+
+    button { border: 0; cursor: pointer; }
+
+    .app {
+      width: min(1440px, 100%);
+      margin: 0 auto;
+      padding: 18px 18px 88px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: center;
+      padding: 8px 0 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      flex: none;
+      color: #021012;
+      background: linear-gradient(135deg, var(--cyan), var(--green));
+      box-shadow: 0 0 28px rgba(57, 214, 232, .28);
+    }
+
+    .brand-mark svg { width: 24px; height: 24px; stroke-width: 2.25; }
+
+    h1 {
+      margin: 0 0 4px;
+      font-size: clamp(22px, 4vw, 32px);
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      min-height: 42px;
+      padding: 0 14px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .05);
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .btn:hover { border-color: var(--line-strong); }
+
+    .btn.primary {
+      background: linear-gradient(135deg, var(--cyan), var(--green));
+      border-color: transparent;
+      color: #021012;
+      font-weight: 800;
+    }
+
+    .btn.danger { color: var(--red); }
+
+    .btn.small {
+      min-height: 34px;
+      padding: 0 10px;
+      font-size: 13px;
+    }
+
+    .icon {
+      width: 38px;
+      min-width: 38px;
+      padding: 0;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 410px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel, .stat, .car-card, .due-item {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .panel {
+      border-radius: 18px;
+      overflow: hidden;
+    }
+
+    .form-panel {
+      position: sticky;
+      top: 14px;
+      max-height: calc(100vh - 28px);
+      overflow: auto;
+    }
+
+    .panel-title {
+      padding: 18px 18px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .form {
+      padding: 16px 18px 18px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .section-label {
+      margin: 8px 0 0;
+      color: var(--cyan);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .08em;
+    }
+
+    label {
+      display: grid;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 11px;
+      background: rgba(4, 13, 18, .76);
+      color: var(--text);
+      outline: none;
+    }
+
+    textarea {
+      min-height: 82px;
+      resize: vertical;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 4px rgba(57, 214, 232, .13);
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .two {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .photo-picker {
+      min-height: 150px;
+      border: 1px dashed var(--line-strong);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, .04);
+      overflow: hidden;
+      display: grid;
+      align-content: center;
+      justify-items: center;
+      gap: 10px;
+      text-align: center;
+      color: var(--muted);
+      padding: 12px;
+    }
+
+    .photo-picker.has-image {
+      padding: 0;
+      align-content: stretch;
+    }
+
+    .photo-picker img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .photo-picker strong {
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    .photo-actions {
+      display: flex;
+      gap: 8px;
+      padding: 8px;
+      width: 100%;
+      background: rgba(4, 13, 18, .78);
+      justify-content: center;
+    }
+
+    .form-actions {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .main {
+      display: grid;
+      gap: 18px;
+      min-width: 0;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .stat {
+      border-radius: 16px;
+      padding: 15px;
+      min-height: 98px;
+      display: grid;
+      align-content: space-between;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 30px;
+      line-height: 1;
+      margin-top: 14px;
+      letter-spacing: 0;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: minmax(180px, 1fr) 150px 150px;
+      gap: 10px;
+      padding: 14px;
+      background: rgba(9, 22, 30, .82);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .due-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      padding: 14px;
+    }
+
+    .due-item {
+      border-radius: 14px;
+      padding: 13px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      box-shadow: none;
+    }
+
+    .due-item strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 25px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+      color: var(--muted);
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid rgba(255, 255, 255, .08);
+    }
+
+    .badge.ok { color: var(--green); background: rgba(71, 224, 154, .10); }
+    .badge.warn { color: var(--amber); background: rgba(255, 195, 90, .12); }
+    .badge.danger { color: var(--red); background: rgba(255, 106, 98, .12); }
+    .badge.info { color: var(--cyan); background: rgba(57, 214, 232, .10); }
+
+    .muted { color: var(--muted); }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      padding: 14px;
+    }
+
+    .car-card {
+      border-radius: 18px;
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    .car-hero {
+      height: 150px;
+      background:
+        linear-gradient(135deg, rgba(57, 214, 232, .18), rgba(71, 224, 154, .08)),
+        repeating-linear-gradient(90deg, transparent, transparent 16px, rgba(255, 255, 255, .035) 17px);
+      display: grid;
+      place-items: center;
+      color: rgba(237, 248, 249, .74);
+      position: relative;
+    }
+
+    .car-hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .license-thumb {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      width: 58px;
+      height: 40px;
+      border: 1px solid rgba(255, 255, 255, .34);
+      border-radius: 8px;
+      object-fit: cover;
+      background: #071319;
+    }
+
+    .car-body {
+      padding: 14px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .car-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .plate {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 3px 10px;
+      border-radius: 8px;
+      background: #123a64;
+      border: 1px solid rgba(98, 168, 255, .7);
+      color: #eef7ff;
+      font-weight: 900;
+      letter-spacing: 0;
+      white-space: nowrap;
+    }
+
+    .car-name {
+      font-size: 17px;
+      font-weight: 800;
+      margin-top: 8px;
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px;
+    }
+
+    .mini {
+      border: 1px solid rgba(255, 255, 255, .08);
+      background: rgba(255, 255, 255, .035);
+      border-radius: 12px;
+      padding: 10px;
+      min-width: 0;
+    }
+
+    .mini span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+
+    .mini strong {
+      display: block;
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    .meta-line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .row-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding-top: 2px;
+    }
+
+    .empty {
+      padding: 34px 18px;
+      text-align: center;
+      color: var(--muted);
+      grid-column: 1 / -1;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: calc(22px + env(safe-area-inset-bottom));
+      transform: translateX(-50%);
+      z-index: 20;
+      display: none;
+      max-width: calc(100vw - 28px);
+      padding: 11px 14px;
+      border-radius: 12px;
+      color: #061114;
+      background: linear-gradient(135deg, var(--cyan), var(--green));
+      box-shadow: var(--shadow);
+      font-weight: 800;
+    }
+
+    .quick-add {
+      display: none;
+      position: fixed;
+      right: 16px;
+      bottom: calc(18px + env(safe-area-inset-bottom));
+      z-index: 12;
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--cyan), var(--green));
+      color: #021012;
+      font-size: 30px;
+      font-weight: 900;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, .42);
+    }
+
+    .file-input { display: none; }
+
+    @media (max-width: 1180px) {
+      .layout { grid-template-columns: 1fr; }
+      .form-panel {
+        position: static;
+        max-height: none;
+      }
+      .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 760px) {
+      .app { padding: 14px 12px 90px; }
+
+      .topbar {
+        grid-template-columns: 1fr;
+        align-items: stretch;
+      }
+
+      .actions {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .actions .btn {
+        padding: 0 8px;
+        font-size: 13px;
+      }
+
+      .layout, .main { gap: 14px; }
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .toolbar, .two, .photo-grid, .form-actions, .due-list, .cards { grid-template-columns: 1fr; }
+
+      .form-panel {
+        display: none;
+        scroll-margin-top: 8px;
+      }
+
+      .form-panel.open { display: block; }
+      .quick-add { display: grid; place-items: center; }
+      .panel-title, .form { padding-left: 14px; padding-right: 14px; }
+      .car-hero { height: 170px; }
+    }
+
+    @media (max-width: 390px) {
+      .brand-mark { width: 42px; height: 42px; }
+      .stats { grid-template-columns: 1fr; }
+      .mini-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Elegant mobile-first skin */
+    :root {
+      color-scheme: light;
+      --bg: #f3f7fa;
+      --panel: #ffffff;
+      --panel-2: #f7fbfd;
+      --line: #e8eef3;
+      --line-strong: #d7e3eb;
+      --text: #111827;
+      --muted: #7b8794;
+      --cyan: #2f86ff;
+      --green: #18b77b;
+      --amber: #d98b16;
+      --red: #d94841;
+      --blue: #2f86ff;
+      --shadow: 0 14px 38px rgba(17, 24, 39, .08);
+    }
+
+    html { background: var(--bg); }
+
+    body {
+      color: var(--text);
+      background:
+        linear-gradient(180deg, rgba(220, 235, 243, .95) 0, rgba(245, 249, 251, .98) 310px, #f3f7fa 100%),
+        var(--bg);
+    }
+
+    .app {
+      max-width: 1180px;
+      padding: 0 16px 94px;
+    }
+
+    .topbar {
+      min-height: 72px;
+      padding: 12px 0 10px;
+    }
+
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: 13px;
+      color: #fff;
+      background: linear-gradient(135deg, #1f6fff, #64b5ff);
+      box-shadow: 0 12px 28px rgba(47, 134, 255, .22);
+    }
+
+    h1 { font-size: 24px; font-weight: 850; }
+    .subtitle { font-size: 13px; color: #667085; }
+
+    .btn {
+      border-color: #e4ebf0;
+      background: #fff;
+      color: var(--text);
+      box-shadow: 0 8px 18px rgba(17, 24, 39, .04);
+    }
+
+    .btn.primary {
+      background: #2f86ff;
+      color: #fff;
+      box-shadow: 0 12px 30px rgba(47, 134, 255, .28);
+    }
+
+    .layout {
+      grid-template-columns: 380px minmax(0, 1fr);
+      gap: 18px;
+    }
+
+    .panel, .stat, .car-card, .due-item {
+      background: rgba(255, 255, 255, .94);
+      border-color: var(--line);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    .panel, .car-card { border-radius: 20px; }
+
+    .form-panel {
+      border-radius: 22px;
+    }
+
+    .section-label {
+      color: #2f86ff;
+      letter-spacing: .04em;
+    }
+
+    input, select, textarea {
+      background: #f8fbfd;
+      border-color: #e4ebf0;
+      color: var(--text);
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #2f86ff;
+      box-shadow: 0 0 0 4px rgba(47, 134, 255, .12);
+    }
+
+    .photo-picker {
+      background: #f8fbfd;
+      border-color: #d7e3eb;
+      color: #667085;
+    }
+
+    .photo-actions { background: rgba(255, 255, 255, .9); }
+
+    .main { gap: 16px; }
+
+    .garage-hero {
+      min-height: 260px;
+      border-radius: 0 0 28px 28px;
+      overflow: hidden;
+      position: relative;
+      padding: 26px 22px;
+      color: #fff;
+      background:
+        linear-gradient(180deg, rgba(10, 22, 35, .24), rgba(10, 22, 35, .62)),
+        linear-gradient(115deg, #9fc7dc 0%, #dbe8ef 34%, #aebdc6 58%, #6e8798 100%);
+      box-shadow: 0 18px 48px rgba(58, 84, 101, .18);
+    }
+
+    .garage-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(150deg, transparent 0 36%, rgba(255,255,255,.32) 36.2% 39%, transparent 39.2%),
+        linear-gradient(28deg, transparent 0 45%, rgba(255,255,255,.38) 45.2% 47%, transparent 47.2%),
+        radial-gradient(circle at 70% 42%, rgba(255,255,255,.5), transparent 3px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.16) 0 1px, transparent 1px 58px);
+      opacity: .62;
+    }
+
+    .garage-hero > * { position: relative; z-index: 1; }
+
+    .hero-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(8, 21, 32, .38);
+      color: #fff;
+      font-weight: 750;
+      font-size: 13px;
+    }
+
+    .hero-copy {
+      margin-top: 54px;
+      display: grid;
+      gap: 9px;
+    }
+
+    .hero-copy strong {
+      font-size: 30px;
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    .hero-copy span {
+      color: rgba(255, 255, 255, .86);
+      font-size: 14px;
+    }
+
+    .featured-card {
+      margin-top: -34px;
+      position: relative;
+      z-index: 2;
+      border-radius: 22px;
+      border: 1px solid rgba(220, 232, 238, .86);
+      background: linear-gradient(135deg, rgba(255,255,255,.96), rgba(239,248,252,.96));
+      box-shadow: 0 18px 54px rgba(31, 64, 86, .13);
+      padding: 16px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 168px;
+      min-height: 152px;
+      overflow: hidden;
+    }
+
+    .featured-card::after {
+      content: "MY CAR";
+      position: absolute;
+      right: 18px;
+      top: 6px;
+      color: rgba(47, 134, 255, .08);
+      font-size: 42px;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .featured-info {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      align-content: center;
+      gap: 8px;
+    }
+
+    .featured-title {
+      font-size: 22px;
+      font-weight: 850;
+    }
+
+    .featured-sub {
+      color: #667085;
+      font-size: 14px;
+    }
+
+    .featured-car {
+      position: relative;
+      z-index: 1;
+      align-self: end;
+      justify-self: end;
+      width: 162px;
+      height: 92px;
+      object-fit: cover;
+      border-radius: 18px;
+      background: #edf4f8;
+    }
+
+    .featured-placeholder {
+      display: grid;
+      place-items: center;
+      color: #9aa7b3;
+      font-weight: 750;
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      padding: 14px;
+    }
+
+    .quick-tile {
+      min-height: 82px;
+      border-radius: 16px;
+      border: 0;
+      background: #fff;
+      color: #172033;
+      display: grid;
+      place-items: center;
+      gap: 8px;
+      box-shadow: 0 10px 28px rgba(17, 24, 39, .05);
+      font-weight: 750;
+    }
+
+    .quick-tile span {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      color: #2f86ff;
+      background: #edf6ff;
+    }
+
+    .quick-tile svg {
+      width: 20px;
+      height: 20px;
+      stroke-width: 2;
+    }
+
+    .stats {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .stat {
+      min-height: 92px;
+      border-radius: 18px;
+      padding: 15px;
+    }
+
+    .stat span { color: #778494; }
+    .stat strong { color: #111827; font-weight: 900; }
+
+    .due-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      background: #fff;
+    }
+
+    .due-item {
+      box-shadow: none;
+      background: #f8fbfd;
+      border-color: #edf2f6;
+    }
+
+    .toolbar {
+      background: #fff;
+      border-color: #eef3f6;
+    }
+
+    .badge {
+      color: #667085;
+      background: #f1f5f8;
+      border-color: #e6edf2;
+    }
+
+    .badge.ok { color: #11845b; background: #eaf8f1; }
+    .badge.warn { color: #a35f08; background: #fff5df; }
+    .badge.danger { color: #b42318; background: #fff0ee; }
+    .badge.info { color: #1b67cb; background: #edf6ff; }
+
+    .cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      padding: 14px;
+      background: #fff;
+    }
+
+    .car-card {
+      box-shadow: 0 12px 32px rgba(17, 24, 39, .07);
+      border-color: #edf2f6;
+    }
+
+    .car-hero {
+      height: 155px;
+      background: linear-gradient(135deg, #edf6ff, #f9fbfd);
+      color: #9aa7b3;
+    }
+
+    .car-body { padding: 14px; }
+
+    .plate {
+      background: #fff;
+      color: #111827;
+      border-color: #c9d5df;
+      box-shadow: 0 8px 18px rgba(17, 24, 39, .05);
+    }
+
+    .car-name {
+      color: #172033;
+      font-size: 20px;
+    }
+
+    .mini {
+      background: #f8fbfd;
+      border-color: #eef3f6;
+    }
+
+    .quick-add {
+      background: #2f86ff;
+      color: #fff;
+      border-radius: 16px;
+      box-shadow: 0 18px 44px rgba(47, 134, 255, .32);
+    }
+
+    .toast {
+      background: #111827;
+      color: #fff;
+    }
+
+    @media (max-width: 760px) {
+      .app { padding: 0 0 92px; }
+      .topbar { padding: 12px 16px 8px; }
+      .layout { display: block; }
+      .main { gap: 12px; }
+      .main > .panel, .stats { margin-left: 12px; margin-right: 12px; }
+      .garage-hero { border-radius: 0 0 26px 26px; min-height: 286px; }
+      .featured-card { margin-left: 12px; margin-right: 12px; grid-template-columns: 1fr 126px; }
+      .featured-car { width: 122px; height: 82px; }
+      .quick-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+      .quick-tile { min-height: 76px; font-size: 12px; box-shadow: none; }
+      .quick-tile span { width: 31px; height: 31px; }
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .due-list, .cards { grid-template-columns: 1fr; }
+      .actions { display: none; }
+      .form-panel {
+        margin: 12px;
+        border-radius: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M5 17h14M7 17v2M17 17v2M6 13l2-5h8l2 5"></path>
+            <path d="M7 13h10a3 3 0 0 1 3 3v1H4v-1a3 3 0 0 1 3-3Z"></path>
+            <path d="M8 16h.01M16 16h.01"></path>
+          </svg>
+        </div>
+        <div>
+          <h1>梦想车库</h1>
+          <p class="subtitle">照片、证件、保养、年审、保险与费用提醒</p>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn" id="exportBtn" type="button">导出备份</button>
+        <label class="btn" for="importFile">导入备份</label>
+        <input class="file-input" id="importFile" type="file" accept="application/json">
+        <button class="btn danger" id="clearBtn" type="button">清空</button>
+      </div>
+    </header>
+
+    <div class="layout">
+      <section class="panel form-panel open" id="formPanel">
+        <div class="panel-title">
+          <h2 id="formTitle">新增车辆</h2>
+          <button class="btn small" type="button" id="closeFormBtn">收起</button>
+        </div>
+        <form class="form" id="carForm">
+          <input id="carId" type="hidden">
+          <input id="vehiclePhoto" type="hidden">
+          <input id="licensePhoto" type="hidden">
+
+          <div class="section-label">照片档案</div>
+          <div class="photo-grid">
+            <div class="photo-picker" id="vehiclePhotoBox">
+              <span>+</span>
+              <strong>添加车辆照片</strong>
+              <small>手机可直接拍照</small>
+              <button class="btn small" type="button" onclick="replacePhoto('vehiclePhoto')">选择照片</button>
+            </div>
+            <input id="vehiclePhotoInput" type="file" accept="image/*" capture="environment">
+
+            <div class="photo-picker" id="licensePhotoBox">
+              <span>+</span>
+              <strong>添加行驶证照片</strong>
+              <small>建议拍清楚主页</small>
+              <button class="btn small" type="button" onclick="replacePhoto('licensePhoto')">选择照片</button>
+            </div>
+            <input id="licensePhotoInput" type="file" accept="image/*" capture="environment">
+          </div>
+
+          <div class="section-label">车辆信息</div>
+          <div class="two">
+            <label>车牌号
+              <input id="plate" required placeholder="例：沪A12345">
+            </label>
+            <label>车辆名称
+              <input id="name" required placeholder="例：奔驰GLC">
+            </label>
+          </div>
+          <div class="two">
+            <label>车型
+              <select id="type">
+                <option>轿车</option>
+                <option>SUV</option>
+                <option>商务车</option>
+                <option>货车</option>
+                <option>新能源</option>
+                <option>其他</option>
+              </select>
+            </label>
+            <label>使用状态
+              <select id="useStatus">
+                <option>正常使用</option>
+                <option>待保养</option>
+                <option>维修中</option>
+                <option>停放备用</option>
+                <option>已出售</option>
+              </select>
+            </label>
+          </div>
+          <div class="two">
+            <label>负责人
+              <input id="owner" placeholder="例：张三">
+            </label>
+            <label>联系电话
+              <input id="ownerPhone" inputmode="tel" placeholder="例：13800000000">
+            </label>
+          </div>
+          <div class="two">
+            <label>车架号/VIN
+              <input id="vin" placeholder="可选">
+            </label>
+            <label>发动机号
+              <input id="engineNo" placeholder="可选">
+            </label>
+          </div>
+          <div class="two">
+            <label>当前公里数
+              <input id="mileage" type="number" min="0" step="1" placeholder="例：28000">
+            </label>
+            <label>购车日期
+              <input id="purchaseDate" type="date">
+            </label>
+          </div>
+          <div class="two">
+            <label>停放位置
+              <input id="parking" placeholder="例：公司地库B2">
+            </label>
+            <label>ETC/油卡
+              <input id="fuelCard" placeholder="例：沪通卡/中石化">
+            </label>
+          </div>
+
+          <div class="section-label">提醒日期</div>
+          <div class="two">
+            <label>上次保养
+              <input id="lastService" type="date">
+            </label>
+            <label>下次保养
+              <input id="nextService" type="date">
+            </label>
+          </div>
+          <div class="two">
+            <label>年审到期
+              <input id="inspectionDue" type="date">
+            </label>
+            <label>保险到期
+              <input id="insuranceDue" type="date">
+            </label>
+          </div>
+          <div class="two">
+            <label>驾照/营运证提醒
+              <input id="permitDue" type="date">
+            </label>
+            <label>轮胎/电瓶检查
+              <input id="checkDue" type="date">
+            </label>
+          </div>
+
+          <div class="section-label">保险与费用</div>
+          <div class="two">
+            <label>保险公司
+              <input id="insuranceCompany" placeholder="例：平安保险">
+            </label>
+            <label>保单号
+              <input id="policyNo" placeholder="可选">
+            </label>
+          </div>
+          <div class="two">
+            <label>保养门店
+              <input id="serviceShop" placeholder="例：某某汽修">
+            </label>
+            <label>门店电话
+              <input id="servicePhone" inputmode="tel" placeholder="可选">
+            </label>
+          </div>
+          <div class="two">
+            <label>上次保养费用
+              <input id="lastCost" type="number" min="0" step="0.01" placeholder="例：680">
+            </label>
+            <label>年度预算/费用
+              <input id="yearCost" type="number" min="0" step="0.01" placeholder="例：12000">
+            </label>
+          </div>
+
+          <label>备注
+            <textarea id="notes" placeholder="事故记录、维修记录、保险条款、钥匙位置等"></textarea>
+          </label>
+          <div class="form-actions">
+            <button class="btn primary" type="submit" id="saveBtn">保存登记</button>
+            <button class="btn" type="button" id="resetBtn">取消编辑</button>
+          </div>
+        </form>
+      </section>
+
+      <main class="main">
+        <section class="garage-hero">
+          <div class="hero-nav">
+            <span class="hero-pill">梦想车库</span>
+            <button class="btn small" type="button" onclick="showForm(true)">添加车辆</button>
+          </div>
+          <div class="hero-copy">
+            <strong>我的爱车，一眼掌握</strong>
+            <span>保养、年审、保险、照片和费用统一管理</span>
+          </div>
+        </section>
+
+        <section class="featured-card" id="featuredCar"></section>
+
+        <section class="panel">
+          <div class="quick-grid">
+            <button class="quick-tile" type="button" onclick="showForm(true)">
+              <span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"></path></svg></span>添加
+            </button>
+            <button class="quick-tile" type="button" onclick="focusSearch('soon')">
+              <span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 8v5l3 2"></path><path d="M4 12a8 8 0 1 0 16 0 8 8 0 0 0-16 0Z"></path></svg></span>提醒
+            </button>
+            <button class="quick-tile" type="button" onclick="focusSearch('overdue')">
+              <span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 9v4"></path><path d="M12 17h.01"></path><path d="M10.3 4.3 2.7 17.5A2 2 0 0 0 4.4 20h15.2a2 2 0 0 0 1.7-2.5L13.7 4.3a2 2 0 0 0-3.4 0Z"></path></svg></span>过期
+            </button>
+            <button class="quick-tile" type="button" onclick="exportData()">
+              <span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3v12"></path><path d="m7 10 5 5 5-5"></path><path d="M5 21h14"></path></svg></span>备份
+            </button>
+            <label class="quick-tile" for="importFile">
+              <span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 21V9"></path><path d="m7 14 5-5 5 5"></path><path d="M5 3h14"></path></svg></span>导入
+            </label>
+          </div>
+        </section>
+
+        <section class="stats" aria-label="统计">
+          <div class="stat"><span>车辆总数</span><strong id="totalCount">0</strong></div>
+          <div class="stat"><span>30天内需处理</span><strong id="soonCount">0</strong></div>
+          <div class="stat"><span>已过期事项</span><strong id="overdueCount">0</strong></div>
+          <div class="stat"><span>有照片档案</span><strong id="photoCount">0</strong></div>
+          <div class="stat"><span>年度费用合计</span><strong id="costCount">0</strong></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-title">
+            <h2>近期提醒</h2>
+          </div>
+          <div class="due-list" id="dueList"></div>
+        </section>
+
+        <section class="panel">
+          <div class="toolbar">
+            <input id="search" placeholder="搜索车牌、车辆、负责人、保险公司">
+            <select id="statusFilter">
+              <option value="all">全部状态</option>
+              <option value="overdue">有过期事项</option>
+              <option value="soon">30天内到期</option>
+              <option value="ok">暂不用处理</option>
+            </select>
+            <select id="typeFilter">
+              <option value="all">全部车型</option>
+              <option>轿车</option>
+              <option>SUV</option>
+              <option>商务车</option>
+              <option>货车</option>
+              <option>新能源</option>
+              <option>其他</option>
+            </select>
+          </div>
+          <div class="cards" id="carCards"></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <button class="quick-add" id="quickAddBtn" type="button" aria-label="新增车辆">+</button>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const storeKey = "fleet-register-v2";
+    const oldStoreKey = "fleet-register-v1";
+    const fields = [
+      "carId", "vehiclePhoto", "licensePhoto", "plate", "name", "type", "useStatus",
+      "owner", "ownerPhone", "vin", "engineNo", "mileage", "purchaseDate", "parking",
+      "fuelCard", "lastService", "nextService", "inspectionDue", "insuranceDue",
+      "permitDue", "checkDue", "insuranceCompany", "policyNo", "serviceShop",
+      "servicePhone", "lastCost", "yearCost", "notes"
+    ];
+    const today = startOfDay(new Date());
+    let cars = loadCars();
+
+    const $ = (id) => document.getElementById(id);
+
+    $("carForm").addEventListener("submit", saveCar);
+    $("resetBtn").addEventListener("click", resetForm);
+    $("search").addEventListener("input", render);
+    $("statusFilter").addEventListener("change", render);
+    $("typeFilter").addEventListener("change", render);
+    $("exportBtn").addEventListener("click", exportData);
+    $("importFile").addEventListener("change", importData);
+    $("clearBtn").addEventListener("click", clearData);
+    $("quickAddBtn").addEventListener("click", () => showForm(true));
+    $("closeFormBtn").addEventListener("click", () => showForm(false));
+    $("vehiclePhotoInput").addEventListener("change", (event) => handlePhoto(event, "vehiclePhoto"));
+    $("licensePhotoInput").addEventListener("change", (event) => handlePhoto(event, "licensePhoto"));
+
+    render();
+    renderPhotoPreviews();
+
+    function loadCars() {
+      const saved = localStorage.getItem(storeKey) || localStorage.getItem(oldStoreKey);
+      if (!saved) {
+        return [
+          {
+            id: crypto.randomUUID(),
+            plate: "沪A12345",
+            name: "示例车",
+            type: "SUV",
+            useStatus: "正常使用",
+            owner: "王师傅",
+            ownerPhone: "13800000000",
+            lastService: "2026-02-10",
+            nextService: "2026-06-10",
+            inspectionDue: "2026-09-20",
+            insuranceDue: "2026-06-05",
+            permitDue: "2026-11-10",
+            checkDue: "2026-07-01",
+            mileage: "28000",
+            purchaseDate: "2023-05-18",
+            parking: "公司地库B2",
+            insuranceCompany: "平安保险",
+            serviceShop: "示例汽修门店",
+            lastCost: "680",
+            yearCost: "12000",
+            notes: "这条是示例，可编辑或删除"
+          }
+        ];
+      }
+      try {
+        const parsed = JSON.parse(saved);
+        return Array.isArray(parsed) ? parsed.map(normalizeCar) : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function normalizeCar(car) {
+      return {
+        useStatus: "正常使用",
+        ownerPhone: "",
+        vin: "",
+        engineNo: "",
+        parking: "",
+        fuelCard: "",
+        permitDue: "",
+        checkDue: "",
+        insuranceCompany: "",
+        policyNo: "",
+        serviceShop: "",
+        servicePhone: "",
+        lastCost: "",
+        yearCost: "",
+        vehiclePhoto: "",
+        licensePhoto: "",
+        ...car,
+        id: car.id || crypto.randomUUID()
+      };
+    }
+
+    function persist() {
+      localStorage.setItem(storeKey, JSON.stringify(cars));
+    }
+
+    function saveCar(event) {
+      event.preventDefault();
+      const data = {};
+      fields.forEach((field) => data[field] = ($(field)?.value || "").trim());
+      const car = normalizeCar({
+        id: data.carId || crypto.randomUUID(),
+        plate: data.plate,
+        name: data.name,
+        type: data.type,
+        useStatus: data.useStatus,
+        owner: data.owner,
+        ownerPhone: data.ownerPhone,
+        vin: data.vin,
+        engineNo: data.engineNo,
+        mileage: data.mileage,
+        purchaseDate: data.purchaseDate,
+        parking: data.parking,
+        fuelCard: data.fuelCard,
+        lastService: data.lastService,
+        nextService: data.nextService,
+        inspectionDue: data.inspectionDue,
+        insuranceDue: data.insuranceDue,
+        permitDue: data.permitDue,
+        checkDue: data.checkDue,
+        insuranceCompany: data.insuranceCompany,
+        policyNo: data.policyNo,
+        serviceShop: data.serviceShop,
+        servicePhone: data.servicePhone,
+        lastCost: data.lastCost,
+        yearCost: data.yearCost,
+        vehiclePhoto: data.vehiclePhoto,
+        licensePhoto: data.licensePhoto,
+        notes: data.notes
+      });
+
+      const existingIndex = cars.findIndex((item) => item.id === car.id);
+      if (existingIndex >= 0) {
+        cars[existingIndex] = car;
+      } else {
+        cars.unshift(car);
+      }
+
+      persist();
+      resetForm();
+      render();
+      toast("已保存");
+    }
+
+    function resetForm() {
+      $("carForm").reset();
+      $("carId").value = "";
+      $("vehiclePhoto").value = "";
+      $("licensePhoto").value = "";
+      $("formTitle").textContent = "新增车辆";
+      $("saveBtn").textContent = "保存登记";
+      renderPhotoPreviews();
+    }
+
+    function editCar(id) {
+      const car = cars.find((item) => item.id === id);
+      if (!car) return;
+      showForm(true);
+      $("carId").value = car.id;
+      fields.forEach((field) => {
+        if ($(field) && field !== "carId") $(field).value = car[field] || "";
+      });
+      $("formTitle").textContent = "编辑车辆";
+      $("saveBtn").textContent = "更新登记";
+      renderPhotoPreviews();
+      $("formPanel").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function removeCar(id) {
+      const car = cars.find((item) => item.id === id);
+      if (!car || !confirm(`确定删除 ${car.plate} 吗？`)) return;
+      cars = cars.filter((item) => item.id !== id);
+      persist();
+      render();
+      toast("已删除");
+    }
+
+    function showForm(open) {
+      $("formPanel").classList.toggle("open", open);
+      if (open) $("formPanel").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function handlePhoto(event, field) {
+      const file = event.target.files[0];
+      if (!file) return;
+      if (!file.type.startsWith("image/")) {
+        alert("请选择照片文件。");
+        return;
+      }
+      compressImage(file, 1100, .76).then((dataUrl) => {
+        $(field).value = dataUrl;
+        renderPhotoPreviews();
+        toast("照片已添加");
+      }).catch(() => alert("照片读取失败，请换一张试试。"));
+      event.target.value = "";
+    }
+
+    function compressImage(file, maxSize, quality) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = reject;
+        reader.onload = () => {
+          const img = new Image();
+          img.onerror = reject;
+          img.onload = () => {
+            const scale = Math.min(1, maxSize / Math.max(img.width, img.height));
+            const canvas = document.createElement("canvas");
+            canvas.width = Math.max(1, Math.round(img.width * scale));
+            canvas.height = Math.max(1, Math.round(img.height * scale));
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            resolve(canvas.toDataURL("image/jpeg", quality));
+          };
+          img.src = reader.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function renderPhotoPreviews() {
+      renderPhotoBox("vehiclePhoto", "vehiclePhotoBox", "添加车辆照片", "手机可直接拍照");
+      renderPhotoBox("licensePhoto", "licensePhotoBox", "添加行驶证照片", "建议拍清楚主页");
+    }
+
+    function renderPhotoBox(field, boxId, title, hint) {
+      const box = $(boxId);
+      const value = $(field).value;
+      box.classList.toggle("has-image", Boolean(value));
+      if (!value) {
+        box.innerHTML = `
+          <span>+</span>
+          <strong>${title}</strong>
+          <small>${hint}</small>
+          <button class="btn small" type="button" onclick="replacePhoto('${field}')">选择照片</button>
+        `;
+        return;
+      }
+      box.innerHTML = `
+        <img src="${value}" alt="${title}">
+        <div class="photo-actions">
+          <button class="btn small" type="button" onclick="replacePhoto('${field}')">重选</button>
+          <button class="btn small danger" type="button" onclick="clearPhoto('${field}')">删除</button>
+        </div>
+      `;
+    }
+
+    function replacePhoto(field) {
+      $(`${field}Input`).click();
+    }
+
+    function clearPhoto(field) {
+      $(field).value = "";
+      renderPhotoPreviews();
+    }
+
+    function render() {
+      const query = $("search").value.trim().toLowerCase();
+      const status = $("statusFilter").value;
+      const type = $("typeFilter").value;
+      const visibleCars = cars.filter((car) => {
+        const text = `${car.plate} ${car.name} ${car.owner} ${car.ownerPhone} ${car.insuranceCompany} ${car.serviceShop} ${car.notes}`.toLowerCase();
+        return text.includes(query)
+          && (type === "all" || car.type === type)
+          && (status === "all" || getCarStatus(car) === status);
+      });
+
+      renderStats();
+      renderFeaturedCar(visibleCars);
+      renderDueList();
+      renderCards(visibleCars);
+    }
+
+    function renderFeaturedCar(list) {
+      const box = $("featuredCar");
+      if (!box) return;
+      const car = list[0] || cars[0];
+      if (!car) {
+        box.innerHTML = `
+          <div class="featured-info">
+            <div class="featured-title">还没有车辆</div>
+            <div class="featured-sub">先添加第一台车，后续提醒会自动汇总</div>
+            <button class="btn primary small" type="button" onclick="showForm(true)">添加车辆</button>
+          </div>
+          <div class="featured-car featured-placeholder">MY CAR</div>
+        `;
+        return;
+      }
+      const photo = car.vehiclePhoto
+        ? `<img class="featured-car" src="${car.vehiclePhoto}" alt="${escapeHtml(car.plate)}车辆照片">`
+        : `<div class="featured-car featured-placeholder">MY CAR</div>`;
+      box.innerHTML = `
+        <div class="featured-info">
+          <div class="featured-title">${escapeHtml(car.name || "未命名车辆")}</div>
+          <div class="featured-sub">${escapeHtml(car.type || "车辆")} · ${escapeHtml(car.useStatus || "正常使用")}</div>
+          <div class="plate">${escapeHtml(car.plate || "未填写车牌")}</div>
+        </div>
+        ${photo}
+      `;
+    }
+
+    function focusSearch(status) {
+      $("statusFilter").value = status;
+      render();
+      document.querySelector(".toolbar")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function renderStats() {
+      const reminders = cars.flatMap(getReminders);
+      const totalCost = cars.reduce((sum, car) => sum + toNumber(car.yearCost), 0);
+      $("totalCount").textContent = cars.length;
+      $("soonCount").textContent = reminders.filter((item) => item.days >= 0 && item.days <= 30).length;
+      $("overdueCount").textContent = reminders.filter((item) => item.days < 0).length;
+      $("photoCount").textContent = cars.filter((car) => car.vehiclePhoto || car.licensePhoto).length;
+      $("costCount").textContent = totalCost ? moneyCompact(totalCost) : "0";
+    }
+
+    function renderDueList() {
+      const list = $("dueList");
+      const reminders = cars.flatMap(getReminders)
+        .filter((item) => item.days <= 60)
+        .sort((a, b) => a.days - b.days)
+        .slice(0, 10);
+
+      if (!reminders.length) {
+        list.innerHTML = `<div class="empty">未来60天暂无待处理事项</div>`;
+        return;
+      }
+
+      list.innerHTML = reminders.map((item) => `
+        <div class="due-item">
+          <div>
+            <strong>${escapeHtml(item.plate)} · ${item.kind}</strong>
+            <span class="muted">${escapeHtml(item.name)}，到期日 ${formatDate(item.date)}</span>
+          </div>
+          ${statusBadge(item.days)}
+        </div>
+      `).join("");
+    }
+
+    function renderCards(list) {
+      const wrap = $("carCards");
+      if (!list.length) {
+        wrap.innerHTML = `<div class="empty">没有符合条件的车辆</div>`;
+        return;
+      }
+
+      wrap.innerHTML = list.map((car) => {
+        const status = getCarStatus(car);
+        const license = car.licensePhoto ? `<img class="license-thumb" src="${car.licensePhoto}" alt="行驶证照片">` : "";
+        const hero = car.vehiclePhoto
+          ? `<img src="${car.vehiclePhoto}" alt="${escapeHtml(car.plate)}车辆照片">${license}`
+          : `<span>暂无车辆照片</span>${license}`;
+        return `
+          <article class="car-card">
+            <div class="car-hero">${hero}</div>
+            <div class="car-body">
+              <div class="car-head">
+                <div>
+                  <div class="plate">${escapeHtml(car.plate)}</div>
+                  <div class="car-name">${escapeHtml(car.name)}</div>
+                </div>
+                ${carStatusBadge(status)}
+              </div>
+              <div class="meta-line">
+                <span class="badge info">${escapeHtml(car.type || "车型未填")}</span>
+                <span class="badge">${escapeHtml(car.useStatus || "正常使用")}</span>
+                ${car.licensePhoto ? `<span class="badge ok">有行驶证</span>` : `<span class="badge">无行驶证</span>`}
+              </div>
+              <div class="mini-grid">
+                ${mini("保养", dateWithShortStatus(car.nextService))}
+                ${mini("年审", dateWithShortStatus(car.inspectionDue))}
+                ${mini("保险", dateWithShortStatus(car.insuranceDue))}
+                ${mini("检查", dateWithShortStatus(car.checkDue))}
+                ${mini("负责人", `${escapeHtml(car.owner || "-")} ${escapeHtml(car.ownerPhone || "")}`)}
+                ${mini("公里/费用", `${car.mileage ? Number(car.mileage).toLocaleString() + " km" : "-"} / ${car.yearCost ? money(car.yearCost) : "-"}`)}
+              </div>
+              <div class="meta-line">
+                ${car.insuranceCompany ? `<span class="badge info">${escapeHtml(car.insuranceCompany)}</span>` : ""}
+                ${car.parking ? `<span class="badge">${escapeHtml(car.parking)}</span>` : ""}
+                ${car.serviceShop ? `<span class="badge">${escapeHtml(car.serviceShop)}</span>` : ""}
+              </div>
+              <div class="muted">${escapeHtml(car.notes || "暂无备注")}</div>
+              <div class="row-actions">
+                <button class="btn small" type="button" onclick="editCar('${car.id}')">编辑</button>
+                <button class="btn small danger" type="button" onclick="removeCar('${car.id}')">删除</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function mini(label, value) {
+      return `<div class="mini"><span>${label}</span><strong>${value || "-"}</strong></div>`;
+    }
+
+    function getCarStatus(car) {
+      const reminders = getReminders(car);
+      if (reminders.some((item) => item.days < 0)) return "overdue";
+      if (reminders.some((item) => item.days <= 30)) return "soon";
+      return "ok";
+    }
+
+    function getReminders(car) {
+      return [
+        { kind: "保养", date: car.nextService },
+        { kind: "年审", date: car.inspectionDue },
+        { kind: "保险", date: car.insuranceDue },
+        { kind: "证件", date: car.permitDue },
+        { kind: "检查", date: car.checkDue }
+      ].filter((item) => item.date).map((item) => ({
+        ...item,
+        plate: car.plate,
+        name: car.name,
+        days: daysBetween(today, parseDate(item.date))
+      }));
+    }
+
+    function dateWithShortStatus(date) {
+      if (!date) return "-";
+      const days = daysBetween(today, parseDate(date));
+      if (days < 0) return `${formatDate(date)} · 过期${Math.abs(days)}天`;
+      if (days === 0) return `${formatDate(date)} · 今天`;
+      return `${formatDate(date)} · ${days}天`;
+    }
+
+    function statusBadge(days) {
+      if (days < 0) return `<span class="badge danger">已过期 ${Math.abs(days)} 天</span>`;
+      if (days === 0) return `<span class="badge warn">今天到期</span>`;
+      if (days <= 30) return `<span class="badge warn">${days} 天后</span>`;
+      return `<span class="badge ok">${days} 天后</span>`;
+    }
+
+    function carStatusBadge(status) {
+      if (status === "overdue") return `<span class="badge danger">需马上处理</span>`;
+      if (status === "soon") return `<span class="badge warn">近期处理</span>`;
+      return `<span class="badge ok">正常</span>`;
+    }
+
+    function parseDate(value) {
+      const [year, month, day] = value.split("-").map(Number);
+      return new Date(year, month - 1, day);
+    }
+
+    function startOfDay(date) {
+      return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    }
+
+    function daysBetween(from, to) {
+      return Math.round((startOfDay(to) - startOfDay(from)) / 86400000);
+    }
+
+    function formatDate(date) {
+      if (!date) return "-";
+      const value = typeof date === "string" ? parseDate(date) : date;
+      return `${value.getFullYear()}-${String(value.getMonth() + 1).padStart(2, "0")}-${String(value.getDate()).padStart(2, "0")}`;
+    }
+
+    function toNumber(value) {
+      const number = Number(value);
+      return Number.isFinite(number) ? number : 0;
+    }
+
+    function money(value) {
+      return `¥${toNumber(value).toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
+    }
+
+    function moneyCompact(value) {
+      if (value >= 10000) return `${(value / 10000).toFixed(value % 10000 ? 1 : 0)}万`;
+      return `${Math.round(value)}`;
+    }
+
+    function exportData() {
+      const payload = { version: 2, exportedAt: new Date().toISOString(), cars };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `车辆登记备份-${formatDate(new Date())}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function importData(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const imported = JSON.parse(reader.result);
+          const list = Array.isArray(imported) ? imported : imported.cars;
+          if (!Array.isArray(list)) throw new Error("invalid");
+          cars = list.map(normalizeCar);
+          persist();
+          resetForm();
+          render();
+          toast("导入完成");
+        } catch {
+          alert("导入失败，请选择之前导出的JSON备份文件。");
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = "";
+    }
+
+    function clearData() {
+      if (!cars.length) return;
+      if (!confirm("确定清空全部车辆登记吗？建议先导出备份。")) return;
+      cars = [];
+      persist();
+      resetForm();
+      render();
+      toast("已清空");
+    }
+
+    function toast(message) {
+      const el = $("toast");
+      el.textContent = message;
+      el.style.display = "block";
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => el.style.display = "none", 1800);
+    }
+
+    function escapeHtml(value) {
+      return String(value || "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      })[char]);
+    }
+  </script>
+</body>
+</html>

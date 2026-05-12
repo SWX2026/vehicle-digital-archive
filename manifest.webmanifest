@@ -1,0 +1,19 @@
+{
+  "name": "梦想车库",
+  "short_name": "梦想车库",
+  "description": "爱车照片、行驶证、保养、年审、保险和费用提醒管理。",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#071319",
+  "theme_color": "#071319",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
